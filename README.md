@@ -3,62 +3,107 @@ page_type: sample
 languages:
 - csharp
 products:
-- dotnet
-description: "Add 150 character max description"
-urlFragment: "update-this-to-unique-url-stub"
+- azure
+- azure-netapp-files
+description: "This project demonstrates how to use dotnet-core with NetApp Files SDK for Microsoft.NetApp resource provider to deploy a NFS 4.1 Volume."
 ---
 
-# Official Microsoft Sample
+# Azure NetAppFiles SDK NFS 4.1 Sample .NETCore
 
-<!-- 
-Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
+This project demonstrates how to deploy a volume enabled with NFS 4.1 protocol using dotnet-core language and Azure NetApp Files SDK.
 
-Guidance on onboarding samples to docs.microsoft.com/samples: https://review.docs.microsoft.com/help/onboard/admin/samples/process/onboarding?branch=master
+In this sample application we perform the following operations:
 
-Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
--->
+* Creation
+  * NetApp Files Account
+  * Capacity Pool
+  * NFS 4.1 enabled Volume
+  * Snapshot
+  * Volume from Snapshot
+* Clean up created resources
 
-Give a short description for your sample here. What does it do and why is it important?
+>Note: the clean up execution is commented out by default, if you want to run this end to end with the clean up, please uncomment related lines at program.cs.
 
-## Contents
-
-Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
-
-| File/folder       | Description                                |
-|-------------------|--------------------------------------------|
-| `src`             | Sample source code.                        |
-| `.gitignore`      | Define what to ignore at commit time.      |
-| `CHANGELOG.md`    | List of changes to the sample.             |
-| `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
-| `README.md`       | This README file.                          |
-| `LICENSE`         | The license for the sample.                |
+If you don't already have a Microsoft Azure subscription, you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212).
 
 ## Prerequisites
 
-Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases.
+1. Azure Subscription
+1. Subscription needs to be whitelisted for Azure NetApp Files. For more information, please refer to [this](https://docs.microsoft.com/azure/azure-netapp-files/azure-netapp-files-register#waitlist) document.
+1. Resource Group created
+1. Virtual Network with a delegated subnet to Microsoft.Netapp/volumes resource. For more information, please refer to [Guidelines for Azure NetApp Files network planning](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-network-topologies)
+1. For this sample console appplication work, we are using service principal nased  authenticate, follow these steps in order to setup authentication:
+    1. Within an [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart) session, make sure you're logged on at the subscription where you want to be associated with the service principal by default:
+        ```bash
+        az account show
+        ```
+        If this is not the correct subscription, use             
+          ```bash
+         az account set -s <subscription name or id>  
+         ```
+    1. Create a service principal using Azure CLI
+        ```bash
+        az ad sp create-for-rbac --sdk-auth
+        ```
 
-## Setup
+        >Note: this command will automatically assign RBAC contributor role to the service principal at subscription level, you can narrow down the scope to the specific resource group where your tests will create the resources.
 
-Explain how to prepare the sample once the user clones or downloads the repository. The section should outline every step necessary to install dependencies and set up any settings (for example, API keys and output folders).
+    1. Copy the output content and paste it in a file called azureauth.json and secure it with file system permissions
+    1. Set an environment variable pointing to the file path you just created, here is an example with Powershell and bash:
+        Powershell 
+        ```powershell
+       [Environment]::SetEnvironmentVariable("AZURE_AUTH_LOCATION", "C:\sdksample\azureauth.json", "User")
+       ```
+        Bash
+        ```bash
+        export AZURE_AUTH_LOCATION=/sdksamples/azureauth.json
+        ``` 
 
-## Runnning the sample
+        >Note: for more information on service principal authentication with dotnet, please refer to [Authenticate with the Azure Libraries for .NET](https://docs.microsoft.com/en-us/dotnet/azure/dotnet-sdk-azure-authenticate?view=azure-dotnet)
 
-Outline step-by-step instructions to execute the sample and see its output. Include steps for executing the sample from the IDE, starting specific services in the Azure portal or anything related to the overall launch of the code.
+# What is anf-dotnetcore-sdk-nfs4.1-sample.dll doing? 
 
-## Key concepts
+This sample project is dedicated to demonstrate how to deploy a Volume in Azure NetApp Files that uses NFS v4.1 protocol, similar to other exampes, the authentication method is based on a service principal, this project will create a single volume with a single capacity pool using standard service level tier and finally an NFS v4.1 Volume, there is a commented out section to remove created resources, if you want to perform the removal right after the creation operations, just remove the comments. For a more advanced example, please see the first item in the references section of this document.
 
-Provide users with more context on the tools and services used in the sample. Explain some of the code that is being used and how services interact with each other.
+# How the project is structured
 
-## Contributing
+The following table describes all files within this solution:
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+| Folder      | FileName                | Description                                                                                                                         |
+|-------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Root        | program.cs              | Authenticates and executes all operations                                                                                           |
+| Root\Common | ResourceUriUtils.cs     | Static class that exposes some methods that helps parsing Uris, building a new Uris or getting a resource name from Uri for example |
+| Root\Common | ServicePrincipalAuth.cs | Small static class used when working with Service Principal based authentication                                                    |
+| Root\Common | Utils.cs                | Static class that exposes a few methods that helps on various tasks, like writting a log to the console for example.                |
+| Root\Model  | AzureAuthInfo.cs        | Class that defines an Azure AD Service Principal authentication file                                                                |
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+# How to run the console application
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+1. Clone it locally
+    ```powershell
+    git clone https://github.com/Azure-Samples/netappfiles-dotnetcore-nfs4.1-sdk-sample.git
+    ```
+1. Make sure you change the variables located at **.netappfiles-dotnetcore-nfs4.1-sdk-sample\src\anf-dotnetcore-sdk-nfs4.1-sample\program.cs at RunAsync method.**
+1. Change folder to **.netappfiles-dotnetcore-nfs4.1-sdk-sample\src\anf-dotnetcore-sdk-nfs4.1-sample**
+1. Since we're using service principal authentication flow, make sure you have the **azureauth.json** and its environment variable with the path to it defined (as previously described)
+1. Build the console application
+    ```powershell
+    dotnet build
+    ```
+1. Run the console application
+    ```powershell
+    dotnet run
+    ```
+
+Sample output
+![e2e execution](./media/e2e-execution.png)
+
+# References
+
+* [Azure NetAppFiles SDK Sample for .NETCore - More advanced example](https://docs.microsoft.com/en-us/samples/azure-samples/netappfiles-dotnetcore-sdk-sample/azure-netappfiles-sdk-sample-for-netcore/)
+* [Authenticate with the Azure Libraries for .NET](https://docs.microsoft.com/en-us/dotnet/azure/dotnet-sdk-azure-authenticate?view=azure-dotnet)
+* [Resource limits for Azure NetApp Files](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-resource-limits)
+* [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart)
+* [Azure NetApp Files documentation](https://docs.microsoft.com/en-us/azure/azure-netapp-files/)
+* [Download Azure SDKs](https://azure.microsoft.com/downloads/)
+
