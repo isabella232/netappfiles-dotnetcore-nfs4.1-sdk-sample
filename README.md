@@ -32,7 +32,7 @@ If you don't already have a Microsoft Azure subscription, you can get a FREE tri
 1. Subscription needs to be whitelisted for Azure NetApp Files. For more information, please refer to [this](https://docs.microsoft.com/azure/azure-netapp-files/azure-netapp-files-register#waitlist) document.
 1. Resource Group created
 1. Virtual Network with a delegated subnet to Microsoft.Netapp/volumes resource. For more information, please refer to [Guidelines for Azure NetApp Files network planning](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-network-topologies)
-1. For this sample console appplication work, we are using service principal nased  authenticate, follow these steps in order to setup authentication:
+1. For this sample console appplication work, we are using service principal based  authenticate, follow these steps in order to setup authentication:
     1. Within an [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart) session, make sure you're logged on at the subscription where you want to be associated with the service principal by default:
         ```bash
         az account show
@@ -63,7 +63,7 @@ If you don't already have a Microsoft Azure subscription, you can get a FREE tri
 
 # What is anf-dotnetcore-sdk-nfs4.1-sample.dll doing? 
 
-This sample project is dedicated to demonstrate how to deploy a Volume in Azure NetApp Files that uses NFS v4.1 protocol, similar to other exampes, the authentication method is based on a service principal, this project will create a single volume with a single capacity pool using standard service level tier and finally an NFS v4.1 Volume, there is a commented out section to remove created resources, if you want to perform the removal right after the creation operations, just remove the comments. For a more advanced example, please see the first item in the references section of this document.
+This sample project is dedicated to demonstrate how to deploy a Volume in Azure NetApp Files that uses NFS v4.1 protocol, similar to other examples, the authentication method is based on a service principal, this project will create a single volume with a single capacity pool using standard service level tier and finally an NFS v4.1 Volume, there is a commented out section to remove created resources, if you want to perform the removal right after the creation operations, just remove the comments. For a more advanced example, please see the first item in the references section of this document.
 
 # How the project is structured
 
