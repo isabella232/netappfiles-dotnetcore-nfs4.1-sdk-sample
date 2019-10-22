@@ -158,7 +158,7 @@ namespace Microsoft.Azure.Management.ANF.Samples
 
         static private async Task WaitForNoAnfResource<T>(AzureNetAppFilesManagementClient client, string resourceId, int intervalInSec = 10, int retries = 60)
         {
-            for (int i=0; i <= retries; i++)
+            for (int i=0; i < retries; i++)
             {
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(intervalInSec));
 
