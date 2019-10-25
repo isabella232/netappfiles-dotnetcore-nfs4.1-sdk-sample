@@ -18,8 +18,6 @@ In this sample application we perform the following operations:
   * NetApp Files Account
   * Capacity Pool
   * NFS 4.1 enabled Volume
-  * Snapshot
-  * Volume from Snapshot
 * Clean up created resources
 
 >Note: the clean up execution is commented out by default, if you want to run this end to end with the clean up, please uncomment related lines at program.cs.
