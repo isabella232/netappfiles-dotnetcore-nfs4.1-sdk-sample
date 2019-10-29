@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Management.ANF.Samples
     class program
     {
         /// <summary>
-        /// Sample console application that execute CRUD management operations on Azure NetApp Files resource
+        /// Sample console application that creates an ANF Account, Capacity Pool and a Volume enable with NFS 4.1 protocol
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
