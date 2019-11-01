@@ -162,7 +162,7 @@ namespace Microsoft.Azure.Management.ANF.Samples
         /// <typeparam name="T">Resource Types as Snapshot, Volume, CapacityPool, and NetAppAccount</typeparam>
         /// <param name="client">ANF Client</param>
         /// <param name="resourceId">Resource Id of the resource being waited for being deleted</param>
-        /// <param name="intervalInSec">Time in seconds that the sample will pool to check if the resource got deleted or not. Defaults to 10 seconds.</param>
+        /// <param name="intervalInSec">Time in seconds that the sample will poll to check if the resource got deleted or not. Defaults to 10 seconds.</param>
         /// <param name="retries">How many retries before exting the wait for no resource function. Defaults to 60 retries.</param>
         /// <returns></returns>
         static private async Task WaitForNoAnfResource<T>(AzureNetAppFilesManagementClient client, string resourceId, int intervalInSec = 10, int retries = 60)
